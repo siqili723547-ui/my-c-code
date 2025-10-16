@@ -1,0 +1,28 @@
+#include <stdio.h>
+
+int main() {
+    int n, a[1000], i = 0;
+    scanf("%d", &n);
+    
+    // 记录整个变化序列
+    while (n != 1) {
+        a[i] = n;
+        i++;
+        if (n % 2 == 1) {
+            n = 3 * n + 1;
+        } else {
+            n = n / 2;
+        }
+    }
+    a[i] = 1;  // 记录最后的1
+    
+    // 从最后的1开始倒序输出
+    for (int j = i; j >= 0; j--) {
+        printf("%d", a[j]);
+        if (j > 0) {
+            printf(" ");
+        }
+    }
+    
+    return 0;
+}
