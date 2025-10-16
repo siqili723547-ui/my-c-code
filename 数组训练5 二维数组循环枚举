@@ -1,0 +1,31 @@
+#include <stdio.h>
+int main()
+{    
+    int N, x, y, j, count = 0;    
+    scanf("%d", &N);    
+    int a[N][3];        
+    
+    for(int i = 0; i < N; i++){        
+        scanf("%d %d %d", &a[i][0], &a[i][1], &a[i][2]);    
+    }    
+    
+    for(int k = 0; k < N; k++){        
+        for(int l = 1; l < N - k; l++){       
+            for(j = 0; j < 3; j++){            
+                if(a[k][j] - a[k+l][j] > 5 || a[k][j] - a[k+l][j] < -5){               
+                    break;
+                }                  
+                if(j == 2){ 
+                    x = a[k][0] + a[k][1] + a[k][2];           
+                    y = a[k+l][0] + a[k+l][1] + a[k+l][2];           
+                    if(x - y <= 10 && x - y >=-10){  
+                        count++;           
+                    }                     
+                }           
+            }        
+        }    
+    }    
+    
+    printf("%d", count);    
+    return 0;
+}
