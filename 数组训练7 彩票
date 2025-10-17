@@ -1,0 +1,102 @@
+#include <stdio.h>
+
+int main() {
+    int n;  // 彩票张数
+    int winning[33] = {0};  // 中奖号码标记数组，索引0-32对应号码1-33
+    int prize_count[7] = {0};  // 奖项统计：0-特等奖,1-一等奖,...,6-六等奖
+    
+    // 读取彩票张数
+    scanf("%d", &n);
+    
+    // 读取7个中奖号码并标记
+    for(int i = 0; i < 7; i++) {
+        int num;
+        scanf("%d", &num);
+        winning[num - 1] = 1;  // 号码n对应索引n-1
+    }
+    
+    // 处理每张彩票
+    for(int i = 0; i < n; i++) {
+        int match_count = 0;  // 当前彩票匹配的中奖号码数量
+        
+        // 读取彩票的7个号码并统计匹配数
+        for(int j = 0; j < 7; j++) {
+            int num;
+            scanf("%d", &num);
+            if(winning[num - 1] == 1) {
+                match_count++;
+            }
+        }
+        
+        // 根据匹配数量确定奖项等级
+        switch(match_count) {
+            case 7: prize_count[0]++; break;  // 特等奖
+            case 6: prize_count[1]++; break;  // 一等奖
+            case 5: prize_count[2]++; break;  // 二等奖
+            case 4: prize_count[3]++; break;  // 三等奖
+            case 3: prize_count[4]++; break;  // 四等奖
+            case 2: prize_count[5]++; break;  // 五等奖
+            case 1: prize_count[6]++; break;  // 六等奖
+        }
+    }
+    
+    // 输出各奖项的中奖张数
+    for(int i = 0; i < 7; i++) {
+        printf("%d", prize_count[i]);
+        if(i < 6) {
+            printf(" ");
+        }
+    }
+    
+    return 0;
+}
+
+-------------------------------------------------------------------------------------------------------
+
+#include <stdio.h>
+
+int main() {
+    int n;  // 彩票张数
+    scanf("%d", &n);
+    
+    int winning[34] = {0};  // 中奖号码标记数组，索引1-33对应号码1-33
+    int result[7] = {0};    // 结果数组：result[0]-特等奖...result[6]-六等奖
+    
+    // 读取中奖号码（7个）
+    for (int i = 0; i < 7; i++) {
+        int num;
+        scanf("%d", &num);
+        winning[num] = 1;  // 标记该号码为中奖号码
+    }
+    
+    // 处理每张彩票
+    for (int i = 0; i < n; i++) {
+        int count = 0;  // 当前彩票匹配的中奖号码个数
+        
+        // 读取彩票的7个号码
+        for (int j = 0; j < 7; j++) {
+            int num;
+            scanf("%d", &num);
+            if (winning[num] == 1) {
+                count++;  // 如果是中奖号码，计数加1
+            }
+        }
+        
+        // 根据匹配个数确定奖项
+        if (count == 7) result[0]++;       // 特等奖
+        else if (count == 6) result[1]++;  // 一等奖  
+        else if (count == 5) result[2]++;  // 二等奖
+        else if (count == 4) result[3]++;  // 三等奖
+        else if (count == 3) result[4]++;  // 四等奖
+        else if (count == 2) result[5]++;  // 五等奖
+        else if (count == 1) result[6]++;  // 六等奖
+    }
+    
+    // 输出结果（特等奖 → 六等奖）
+    for (int i = 0; i < 7; i++) {
+        printf("%d", result[i]);
+        if (i < 6) printf(" ");  // 数字间用空格分隔
+    }
+    
+    return 0;
+}
