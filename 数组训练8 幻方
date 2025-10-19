@@ -56,6 +56,7 @@ int main() {
 #include <stdio.h>
 
 #define MAX_SIZE 40  // 定义最大尺寸，因为N≤39
+//这个定义语句可以学一下 严谨
 
 int main() {
     int n;
