@@ -1,14 +1,14 @@
-#include <stdio.h>
+#include <stdio.h>//这是一道拆解数字的题目 最后一项会是0
 int main()
 {    
-int a[99],i=0;    
-while(i>=0){        
-scanf("%d",&a[i]);        
+int a[99],i=0;   //定义数组大小 
+while(i>=0){        //i作为数组在循环里的计数器 同时也是确定输入位置的工具
+scanf("%d",&a[i]);       //while循环逐个读入数字 并储存在数组里 
 if(a[i]==0)break;          
 i++;    
 }    
-for(i-=1;i>=0;i--){        
-printf("%d ",a[i]);    
+for(i-=1;i>=0;i--){   //注意i的变动 要减回一个1     
+printf("%d ",a[i]);    //最后倒序输出数组内容
 }    
     return 0;
 }
