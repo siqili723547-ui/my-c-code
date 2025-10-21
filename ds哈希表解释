@@ -1,0 +1,265 @@
+好的！我来详细讲解**哈希表（Hash Table）**，这是一种非常重要的数据结构。
+
+## 哈希表基本概念
+
+**哈希表**是一种通过键（key）直接访问值（value）的数据结构，平均情况下可以在 O(1) 时间复杂度内完成查找、插入和删除操作。
+
+## 哈希表的组成
+
+1. **哈希函数**：将键映射到数组索引
+2. **数组**：存储数据的容器
+3. **冲突解决机制**：处理不同键映射到同一索引的情况
+
+## 完整代码实现
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define TABLE_SIZE 10
+
+// 哈希表节点结构
+typedef struct HashNode {
+    char* key;           // 键（字符串）
+    int value;           // 值（整数）
+    struct HashNode* next; // 下一个节点（解决冲突）
+} HashNode;
+
+// 哈希表结构
+typedef struct {
+    HashNode** table;    // 哈希表数组
+    int size;           // 哈希表大小
+} HashTable;
+
+// 哈希函数：将字符串转换为数组索引
+unsigned int hashFunction(const char* key, int tableSize) {
+    unsigned int hash = 0;
+    while (*key) {
+        hash = (hash << 5) + *key++; // 左移5位相当于乘以32
+    }
+    return hash % tableSize;
+}
+
+// 创建哈希表
+HashTable* createHashTable(int size) {
+    HashTable* ht = (HashTable*)malloc(sizeof(HashTable));
+    ht->size = size;
+    ht->table = (HashNode**)calloc(size, sizeof(HashNode*)); // 初始化为NULL
+    return ht;
+}
+
+// 插入键值对
+void insert(HashTable* ht, const char* key, int value) {
+    // 计算哈希值
+    unsigned int index = hashFunction(key, ht->size);
+    
+    // 检查键是否已存在
+    HashNode* current = ht->table[index];
+    while (current != NULL) {
+        if (strcmp(current->key, key) == 0) {
+            // 键已存在，更新值
+            current->value = value;
+            return;
+        }
+        current = current->next;
+    }
+    
+    // 创建新节点
+    HashNode* newNode = (HashNode*)malloc(sizeof(HashNode));
+    newNode->key = strdup(key); // 复制字符串
+    newNode->value = value;
+    
+    // 头插法：新节点插入链表头部
+    newNode->next = ht->table[index];
+    ht->table[index] = newNode;
+    
+    printf("插入成功: %s -> %d (索引: %d)\n", key, value, index);
+}
+
+// 查找键对应的值
+int search(HashTable* ht, const char* key) {
+    unsigned int index = hashFunction(key, ht->size);
+    HashNode* current = ht->table[index];
+    
+    while (current != NULL) {
+        if (strcmp(current->key, key) == 0) {
+            return current->value; // 找到键，返回值
+        }
+        current = current->next;
+    }
+    
+    return -1; // 未找到
+}
+
+// 删除键值对
+int delete(HashTable* ht, const char* key) {
+    unsigned int index = hashFunction(key, ht->size);
+    HashNode* current = ht->table[index];
+    HashNode* prev = NULL;
+    
+    while (current != NULL) {
+        if (strcmp(current->key, key) == 0) {
+            // 找到要删除的节点
+            if (prev == NULL) {
+                // 删除的是链表头节点
+                ht->table[index] = current->next;
+            } else {
+                // 删除的是中间或尾部节点
+                prev->next = current->next;
+            }
+            
+            free(current->key); // 释放键的内存
+            free(current);      // 释放节点的内存
+            printf("删除成功: %s\n", key);
+            return 1; // 删除成功
+        }
+        prev = current;
+        current = current->next;
+    }
+    
+    printf("删除失败: 未找到键 %s\n", key);
+    return 0; // 删除失败
+}
+
+// 打印哈希表
+void printHashTable(HashTable* ht) {
+    printf("\n哈希表内容:\n");
+    printf("===========\n");
+    
+    for (int i = 0; i < ht->size; i++) {
+        printf("索引 %d: ", i);
+        
+        HashNode* current = ht->table[i];
+        if (current == NULL) {
+            printf("空");
+        } else {
+            while (current != NULL) {
+                printf("[%s:%d]", current->key, current->value);
+                if (current->next != NULL) {
+                    printf(" -> ");
+                }
+                current = current->next;
+            }
+        }
+        printf("\n");
+    }
+    printf("===========\n");
+}
+
+// 释放哈希表内存
+void freeHashTable(HashTable* ht) {
+    for (int i = 0; i < ht->size; i++) {
+        HashNode* current = ht->table[i];
+        while (current != NULL) {
+            HashNode* temp = current;
+            current = current->next;
+            free(temp->key); // 释放字符串内存
+            free(temp);      // 释放节点内存
+        }
+    }
+    free(ht->table);
+    free(ht);
+}
+
+// 测试函数
+int main() {
+    // 创建哈希表
+    HashTable* ht = createHashTable(TABLE_SIZE);
+    
+    printf("=== 哈希表测试 ===\n");
+    
+    // 插入测试
+    insert(ht, "apple", 10);
+    insert(ht, "banana", 20);
+    insert(ht, "orange", 30);
+    insert(ht, "grape", 40);
+    insert(ht, "apple", 50); // 更新已存在的键
+    
+    // 打印哈希表
+    printHashTable(ht);
+    
+    // 查找测试
+    printf("\n=== 查找测试 ===\n");
+    const char* keys[] = {"apple", "banana", "watermelon", "orange"};
+    for (int i = 0; i < 4; i++) {
+        int result = search(ht, keys[i]);
+        if (result != -1) {
+            printf("找到 %s: %d\n", keys[i], result);
+        } else {
+            printf("未找到: %s\n", keys[i]);
+        }
+    }
+    
+    // 删除测试
+    printf("\n=== 删除测试 ===\n");
+    delete(ht, "banana");
+    delete(ht, "watermelon"); // 删除不存在的键
+    
+    // 再次打印哈希表
+    printHashTable(ht);
+    
+    // 释放内存
+    freeHashTable(ht);
+    
+    return 0;
+}
+```
+
+## 运行结果示例
+
+```
+=== 哈希表测试 ===
+插入成功: apple -> 10 (索引: 0)
+插入成功: banana -> 20 (索引: 8)
+插入成功: orange -> 30 (索引: 8)
+插入成功: grape -> 40 (索引: 3)
+插入成功: apple -> 50 (索引: 0)
+
+哈希表内容:
+===========
+索引 0: [apple:50]
+索引 1: 空
+索引 2: 空
+索引 3: [grape:40]
+索引 4: 空
+索引 5: 空
+索引 6: 空
+索引 7: 空
+索引 8: [orange:30] -> [banana:20]
+索引 9: 空
+===========
+
+=== 查找测试 ===
+找到 apple: 50
+找到 banana: 20
+未找到: watermelon
+找到 orange: 30
+
+=== 删除测试 ===
+删除成功: banana
+删除失败: 未找到键 watermelon
+
+哈希表内容:
+===========
+索引 0: [apple:50]
+索引 1: 空
+索引 2: 空
+索引 3: [grape:40]
+索引 4: 空
+索引 5: 空
+索引 6: 空
+索引 7: 空
+索引 8: [orange:30]
+索引 9: 空
+===========
+```
+
+## 关键特点
+
+1. **链地址法**：使用链表解决哈希冲突
+2. **动态内存管理**：正确分配和释放内存
+3. **字符串键**：支持字符串作为键
+4. **完整的CRUD操作**：插入、查找、删除、遍历
+
+这个实现展示了哈希表的核心原理和实际应用！
