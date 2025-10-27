@@ -1,0 +1,35 @@
+
+#include <ctype.h>字符分类转换函数头文件
+// 检查是否为字母
+isalpha(c);    // 是否为字母 (a-z, A-Z)
+isalnum(c);    // 是否为字母或数字
+// 检查大小写
+islower(c);    // 是否为小写字母 (a-z)
+isupper(c);    // 是否为大写字母 (A-Z)
+// 检查数字
+isdigit(c);    // 是否为数字 (0-9)
+isxdigit(c);   // 是否为十六进制数字 (0-9, a-f, A-F)
+// 检查空白字符
+isspace(c);    // 是否为空白字符 (空格、\t、\n、\r等)
+// 其他分类
+iscntrl(c);    // 是否为控制字符
+isprint(c);    // 是否为可打印字符
+ispunct(c);    // 是否为标点符号
+isgraph(c);    // 是否为图形字符（除空格外）
+#include <stdio.h>
+#include <ctype.h>
+代码示例：
+int main() {
+    char str[] = "Hello, World! 123";    
+    for (int i = 0; str[i] != '\0'; i++) {
+        printf("'%c': ", str[i]);        
+        if (isalpha(str[i])) printf("字母 ");
+        if (isdigit(str[i])) printf("数字 ");
+        if (islower(str[i])) printf("小写 ");
+        if (isupper(str[i])) printf("大写 ");
+        if (isspace(str[i])) printf("空白 ");
+        if (ispunct(str[i])) printf("标点 ");        
+        printf("\n");
+    }    
+    return 0;
+}
