@@ -1,0 +1,111 @@
+1.字符数组函数头文件
+#include <string.h>  // 需要这个头文件的情况：
+// 字符串长度
+strlen(s);
+// 字符串复制
+strcpy(dest, src);
+strncpy(dest, src, n);
+// 字符串连接
+strcat(dest, src);
+// 字符串比较
+strcmp(s1, s2);
+// 字符串查找
+strchr(s, 'a');    // 查找字符
+strstr(s, "abc");  // 查找子串
+
+示例
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+    char str1[50] = "Hello, World!";
+    char str2[50] = "C Programming";
+    char str3[50] = "";
+    char buffer[100];
+    
+    printf("=== string.h 函数演示 ===\n\n");
+    
+    // 1. strlen - 字符串长度
+    printf("1. strlen:\n");
+    printf("   '%s' 的长度: %lu\n", str1, strlen(str1));
+    printf("   '%s' 的长度: %lu\n\n", str2, strlen(str2));
+    
+    // 2. strcpy - 字符串复制
+    printf("2. strcpy:\n");
+    strcpy(str3, str1);
+    printf("   复制后 str3: '%s'\n\n", str3);
+    
+    // 3. strncpy - 安全字符串复制
+    printf("3. strncpy:\n");
+    strncpy(buffer, str1, 5);
+    buffer[5] = '\0';  // 手动添加结束符
+    printf("   复制前5个字符: '%s'\n\n", buffer);
+    
+    // 4. strcat - 字符串连接
+    printf("4. strcat:\n");
+    strcpy(buffer, "Hello");
+    strcat(buffer, " World!");
+    printf("   连接后: '%s'\n\n", buffer);
+    
+    // 5. strncat - 安全字符串连接
+    printf("5. strncat:\n");
+    strcpy(buffer, "Hello");
+    strncat(buffer, " Beautiful World!", 10);
+    printf("   安全连接后: '%s'\n\n", buffer);
+    
+    // 6. strcmp - 字符串比较
+    printf("6. strcmp:\n");
+    char *s1 = "apple";
+    char *s2 = "banana";
+    char *s3 = "apple";
+    
+    printf("   'apple' vs 'banana': %d\n", strcmp(s1, s2));
+    printf("   'banana' vs 'apple': %d\n", strcmp(s2, s1));
+    printf("   'apple' vs 'apple': %d\n\n", strcmp(s1, s3));
+    
+    // 7. strchr - 查找字符
+    printf("7. strchr:\n");
+    char *pos = strchr(str1, 'W');
+    if (pos) {
+        printf("   在 '%s' 中找到 'W', 位置: %ld\n", str1, pos - str1);
+    } else {
+        printf("   未找到字符\n");
+    }
+    
+    // 8. strstr - 查找子串
+    printf("8. strstr:\n");
+    char *sub = strstr(str1, "World");
+    if (sub) {
+        printf("   在 '%s' 中找到 'World', 位置: %ld\n\n", str1, sub - str1);
+    } else {
+        printf("   未找到子串\n\n");
+    }
+    
+    // 9. strtok - 字符串分割
+    printf("9. strtok:\n");
+    char text[] = "apple,banana,orange,grape";
+    char *token = strtok(text, ",");
+    
+    printf("   分割 '%s':\n", text);
+    while (token != NULL) {
+        printf("   - %s\n", token);
+        token = strtok(NULL, ",");
+    }
+    printf("\n");
+    
+    // 10. memset - 内存设置
+    printf("10. memset:\n");
+    char test[10];
+    memset(test, 'A', 9);
+    test[9] = '\0';
+    printf("   填充后: '%s'\n\n", test);
+    
+    // 11. memcpy - 内存复制
+    printf("11. memcpy:\n");
+    char src[] = "Memory Copy";
+    char dest[20];
+    memcpy(dest, src, strlen(src) + 1);  // +1 包含结束符
+    printf("   复制后: '%s'\n\n", dest);
+    
+    return 0;
+}
