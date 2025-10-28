@@ -72,3 +72,13 @@ for (int i = 0; i < len; i++) {
         s
 [i] = 'a' + (s[i] - 'a' + n) % 26;
     }
+字符串训练3
+1.fgets整行输入
+// 使用fgets读取整行输入
+    // fgets(s, sizeof(s), stdin) 参数说明：
+    // - s: 目标字符数组
+    // - sizeof(s): 最大读取字符数（包括结尾的null字符），这里为10
+    // - stdin: 标准输入流（键盘输入）
+    // 特点：会读取整行（包括空格），保留换行符'\n'（如果缓冲区足够大）
+#include <string.h>
+    fgets(s, sizeof(s), stdin);
