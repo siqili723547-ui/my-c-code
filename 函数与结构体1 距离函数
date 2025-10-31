@@ -1,0 +1,39 @@
+#include <stdio.h>    // 引入标准输入输出库，用于scanf和printf
+#include <math.h>     // 引入数学函数库，用于sqrt开平方函数
+
+// 定义计算两点之间距离的函数
+// 函数参数：两个点的坐标 (x1,y1) 和 (x2,y2)
+// 返回值：两点之间的直线距离
+double distance(double x1, double y1, double x2, double y2) {
+    // 使用两点间距离公式：√[(x2-x1)² + (y2-y1)²]
+    return sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
+    // 也可以写成：return sqrt(pow(x2-x1, 2) + pow(y2-y1, 2));
+}
+
+int main() {
+    // 定义六个double变量，分别存储三个点的x,y坐标
+    double x1, y1;  // 第一个点的坐标
+    double x2, y2;  // 第二个点的坐标  
+    double x3, y3;  // 第三个点的坐标
+    
+    // 读取用户输入的三个点坐标
+    // 每行读取两个浮点数，分别赋值给x和y坐标
+    scanf("%lf %lf", &x1, &y1);  // 读取第一个点 (x1,y1)
+    scanf("%lf %lf", &x2, &y2);  // 读取第二个点 (x2,y2)
+    scanf("%lf %lf", &x3, &y3);  // 读取第三个点 (x3,y3)
+    
+    // 计算三角形的三条边长
+    // 调用distance函数计算每两个点之间的距离
+    double side1 = distance(x1, y1, x2, y2);  // 边1：点1到点2的距离
+    double side2 = distance(x2, y2, x3, y3);  // 边2：点2到点3的距离
+    double side3 = distance(x3, y3, x1, y1);  // 边3：点3到点1的距离
+    
+    // 计算三角形周长：三条边长度之和
+    double perimeter = side1 + side2 + side3;
+    
+    // 输出结果，保留两位小数
+    // %.2f 表示输出浮点数，保留2位小数，会自动四舍五入
+    printf("%.2f\n", perimeter);
+    
+    return 0;  // 程序正常结束
+}
