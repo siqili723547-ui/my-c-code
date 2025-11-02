@@ -1,0 +1,51 @@
+#include <stdio.h>      // 标准输入输出库，提供scanf和printf函数
+#include <math.h>       // 数学函数库，提供sqrt函数
+#include <stdbool.h>    // 布尔类型库，提供bool、true、false
+
+/**
+ * 判断一个数是否为质数
+ * @param x: 要判断的整数
+ * @return: 如果是质数返回true，否则返回false
+ */
+bool isPrime(int x) {
+    // 质数定义：大于1的自然数，且只能被1和自身整除
+    if (x <= 1) return false;   // 1和负数都不是质数
+    if (x == 2) return true;    // 2是最小的质数
+    if (x % 2 == 0) return false; // 除了2以外的偶数都不是质数
+    
+    // 检查奇数因子，从3开始，每次加2（跳过偶数）
+    // 只需要检查到sqrt(x)即可，因为如果x有大于sqrt(x)的因子，那么必然有小于sqrt(x)的对应因子
+    int limit = sqrt(x);        // 计算检查的上限
+    for (int i = 3; i <= limit; i += 2) {
+        if (x % i == 0) return false;  // 如果能被整除，说明不是质数
+    }
+    return true;  // 通过所有检查，是质数
+}
+
+int main() {
+    int n;  // 定义整数个数变量
+    scanf("%d", &n);  // 读取整数个数n
+    
+    int arr[n];  // 定义长度为n的数组（C99变长数组特性）
+    
+    // 循环读取n个整数到数组中
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &arr[i]);  // 读取第i个整数
+    }
+    
+    bool first = true;  // 标记是否是第一个输出的质数，用于控制空格输出
+    
+    // 遍历数组中的每个数
+    for (int i = 0; i < n; i++) {
+        if (isPrime(arr[i])) {  // 如果当前数是质数
+            if (!first) {       // 如果不是第一个输出的质数
+                printf(" ");    // 先输出一个空格分隔
+            }
+            printf("%d", arr[i]);  // 输出质数
+            first = false;      // 更新标记，表示已经输出过质数
+        }
+    }
+    printf("\n");  // 最后输出换行符
+    
+    return 0;  // 程序正常结束
+}
