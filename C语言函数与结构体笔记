@@ -2,3 +2,9 @@
 函数与结构体1
 #include <math.h>
 sqrt(x)； //开根
+
+11.2
+函数与结构体2
+#include <stdbool.h>
+布尔类型库
+if(！first)等价于if(first==0)
