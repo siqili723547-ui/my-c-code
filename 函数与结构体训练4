@@ -1,0 +1,59 @@
+#include <stdio.h>    // 标准输入输出库，用于scanf和printf
+#include <string.h>   // 字符串处理库（虽然这个简单程序没用到，但习惯性包含）
+
+// 定义学生结构体，用于存储每个学生的信息
+struct Student {
+    char name[9];     // 姓名，最多8个字符 + 1个字符串结束符'\0'
+    int chinese;      // 语文成绩
+    int math;         // 数学成绩  
+    int english;      // 英语成绩
+};
+
+// 计算学生总分的函数
+// 参数：s - 学生结构体
+// 返回值：三门课程的总分
+int total_score(struct Student s) {
+    return s.chinese + s.math + s.english;  // 返回语文+数学+英语的总和
+}
+
+int main() {
+    int N;  // 学生人数
+    scanf("%d", &N);  // 读取学生数量
+    
+    struct Student top_student;  // 用于记录最厉害的学生信息
+    int max_total = -1;          // 记录当前最高分，初始设为-1确保第一个学生能更新
+    
+    // 循环处理每个学生
+    for (int i = 0; i < N; i++) {
+        struct Student current;  // 当前正在处理的学生
+        
+        // 读取当前学生的信息：姓名和三科成绩
+        // 注意：name是数组名，本身就是地址，所以不需要&
+        // chinese, math, english是整型变量，需要&取地址
+        scanf("%s %d %d %d", 
+              current.name, 
+              &current.chinese, 
+              &current.math, 
+              &current.english);
+        
+        // 计算当前学生的总分
+        int current_total = total_score(current);
+        
+        // 判断当前学生是否比之前记录的最厉害学生更厉害
+        // 使用 > 而不是 >= 是为了保证当总分相同时，保留先出现的学生（靠前的）
+        if (current_total > max_total) {
+            max_total = current_total;    // 更新最高分
+            top_student = current;        // 更新最厉害学生信息
+            // 这里进行了结构体的整体赋值，C语言允许这种操作
+        }
+    }
+    
+    // 输出最厉害的学生的完整信息
+    printf("%s %d %d %d\n", 
+           top_student.name, 
+           top_student.chinese, 
+           top_student.math, 
+           top_student.english);
+    
+    return 0;  // 程序正常结束
+}
