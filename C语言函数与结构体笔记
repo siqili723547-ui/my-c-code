@@ -8,3 +8,27 @@ sqrt(x)； //开根
 #include <stdbool.h>
 布尔类型库
 if(！first)等价于if(first==0)
+
+11.7
+函数与结构体4
+struct Student {
+    char name[9];     // 姓名，最多8个字符 + 1个字符串结束符'\0'
+    int chinese;      // 语文成绩
+    int math;         // 数学成绩  
+    int english;      // 英语成绩
+};
+
+struct Student 变量名；//定义完结构体引用时
+struct Student 变量名.小变量；//输出输入结构里面的小变量 
+定义结构体变量
+struct Student top;        // 正确
+struct Student.current;    // 错误
+函数定义
+int total(struct Student s)  // 正确
+int total(struct Student.s)  // 错误
+函数调用
+total(current);             // 正确
+int total(struct Student.current);  // 错误
+结构体赋值
+top = current;             // 正确
+Student.top = Student.current;  // 错误
