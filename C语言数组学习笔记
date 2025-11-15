@@ -82,3 +82,7 @@ for (int i = 0; i < len; i++) {
     // 特点：会读取整行（包括空格），保留换行符'\n'（如果缓冲区足够大）
 #include <string.h>
     fgets(s, sizeof(s), stdin);
+
+11.15
+方向数组
+需要控制器 引导变量 容器数组 
