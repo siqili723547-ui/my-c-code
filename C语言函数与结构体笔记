@@ -32,3 +32,7 @@ int total(struct Student.current);  // 错误
 结构体赋值
 top = current;             // 正确
 Student.top = Student.current;  // 错误
+
+12.6
+函数与结构体6
+递归函数中要留意无限递归问题
