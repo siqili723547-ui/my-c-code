@@ -1,0 +1,17 @@
+#include <stdio.h>
+
+int jiecheng(int n)
+{
+    if(n <= 1)  // 添加基线条件
+        return 1;
+    else
+        return n * jiecheng(n-1);//递归函数 要注意n的条件限制 避免无限递归
+}
+
+int main()
+{
+    int n;
+    scanf("%d", &n);
+    printf("%d", jiecheng(n));
+    return 0;
+}
