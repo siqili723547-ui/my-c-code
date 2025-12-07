@@ -1,0 +1,56 @@
+#include <stdio.h>    // 用于输入输出函数：scanf, printf
+#include <stdlib.h>   // 用于abs()函数：计算整数的绝对值
+
+// 定义学生结构体，同时声明大小为1000的结构体数组
+struct Student {
+    char name[9];      // 学生姓名，最多8个字符 + 1个'\0'结束符
+    int chinese;       // 语文成绩
+    int math;          // 数学成绩
+    int english;       // 英语成绩
+    int total;         // 总成绩（语文+数学+英语）
+} stu[1000];           // 声明可以容纳1000个学生的数组（题目N≤1000）
+
+int main() {
+    int N;  // 学生人数
+    scanf("%d", &N);  // 读取学生数量
+    
+    // ========== 第一阶段：读取学生数据 ==========
+    for(int i = 0; i < N; i++) {  // 循环读取每个学生的信息
+        // 格式：姓名 语文 数学 英语
+        scanf("%s %d %d %d", 
+              stu[i].name,        // 读取姓名（不需要&，因为数组名就是地址）
+              &stu[i].chinese,    // 读取语文成绩的地址
+              &stu[i].math,       // 读取数学成绩的地址
+              &stu[i].english);   // 读取英语成绩的地址
+        
+        // 计算该学生的总成绩
+        stu[i].total = stu[i].chinese + stu[i].math + stu[i].english;
+    }
+    
+    // ========== 第二阶段：查找旗鼓相当的对手 ==========
+    // 双重循环枚举所有可能的学生组合(i, j)，其中i<j
+    // 这样可以保证：1.不重复比较 2.姓名字典序i<j（因为输入已排序）
+    for(int i = 0; i < N; i++) {          // 外层循环：第一个学生
+        for(int j = i + 1; j < N; j++) {  // 内层循环：第二个学生（从i+1开始，避免重复）
+            
+            // 条件1：检查语文成绩分差是否≤5
+            // abs()函数计算绝对值，如果分差>5则跳过这对组合
+            if(abs(stu[i].chinese - stu[j].chinese) > 5) continue;
+            
+            // 条件2：检查数学成绩分差是否≤5
+            if(abs(stu[i].math - stu[j].math) > 5) continue;
+            
+            // 条件3：检查英语成绩分差是否≤5
+            if(abs(stu[i].english - stu[j].english) > 5) continue;
+            
+            // 条件4：检查总分分差是否≤10
+            if(abs(stu[i].total - stu[j].total) > 10) continue;
+            
+            // ========== 通过所有条件，输出这对组合 ==========
+            // 由于i<j且输入时姓名已按字典序排序，所以stu[i].name字典序≤stu[j].name
+            printf("%s %s\n", stu[i].name, stu[j].name);
+        }
+    }
+    
+    return 0;  // 程序正常结束
+}
