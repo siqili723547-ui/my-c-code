@@ -1,5 +1,4 @@
 #include <stdio.h>
-
 // 插入函数：在有序字符串中插入字符并保持升序
 char *insert(char *string, char c) {
     char *p = string;
@@ -7,7 +6,6 @@ char *insert(char *string, char c) {
     while (*p != '\0' && *p <= c) {
         p++;
     }
-    
     // 步骤2：将插入位置及之后的字符（含结束符）后移1位
     char *end = string;
     while (*end != '\0') { // 定位字符串末尾
