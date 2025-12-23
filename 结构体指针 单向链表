@@ -1,0 +1,106 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// 1. 定义链表节点结构体（明确包含ch成员，无需依赖外部头文件）
+struct node {
+    char ch;          // 数据域：存储字符数据
+    struct node *next; // 指针域：指向后续节点
+};
+
+// 2. 辅助函数：创建单个链表节点
+struct node* createNode(char ch) {
+    struct node* newNode = (struct node*)malloc(sizeof(struct node));
+    if (newNode == NULL) { // 判断内存分配是否成功
+        printf("内存分配失败！\n");
+        exit(1);
+    }
+    newNode->ch = ch;
+    newNode->next = NULL;
+    return newNode;
+}
+
+// 3. 辅助函数：打印链表内容
+void printList(struct node* head) {
+    if (head == NULL) {
+        printf("链表为空！\n");
+        return;
+    }
+    struct node* p = head;
+    while (p != NULL) {
+        printf("%c ", p->ch);
+        p = p->next;
+    }
+    printf("\n");
+}
+
+// 4. 核心函数：链表选择排序（与原题逻辑一致）
+struct node* sorting(struct node* L) {
+    // 边界条件：空链表或单节点链表直接返回
+    if (L == NULL || L->next == NULL) {
+        return L;
+    }
+
+    struct node *current = L;  // 当前未排序部分的起始节点
+    struct node *min_node;     // 记录当前未排序部分的最小节点
+    struct node *temp;         // 遍历用的临时指针
+
+    while (current != NULL) {
+        min_node = current;    // 初始化最小节点为当前起始节点
+        temp = current->next;  // 从下一个节点开始遍历未排序部分
+
+        // 找到未排序部分的最小节点
+        while (temp != NULL) {
+            if (temp->ch < min_node->ch) {
+                min_node = temp;
+            }
+            temp = temp->next;
+        }
+
+        // 交换当前起始节点与最小节点的ch值
+        char temp_ch = current->ch;
+        current->ch = min_node->ch;
+        min_node->ch = temp_ch;
+
+        // 推进到下一个未排序节点
+        current = current->next;
+    }
+
+    return L;  // 返回排序后的链表头指针
+}
+
+// 5. 辅助函数：释放链表内存（避免内存泄漏）
+void freeList(struct node* head) {
+    struct node* temp;
+    while (head != NULL) {
+        temp = head;
+        head = head->next;
+        free(temp);
+    }
+}
+
+// 6. 主函数：测试链表排序功能
+int main() {
+    // 步骤1：手动创建测试链表（d -> b -> a -> c -> e）
+    struct node* head = createNode('d');
+    head->next = createNode('b');
+    head->next->next = createNode('a');
+    head->next->next->next = createNode('c');
+    head->next->next->next->next = createNode('e');
+
+    // 步骤2：打印排序前的链表
+    printf("排序前的链表：");
+    printList(head);
+
+    // 步骤3：执行排序
+    head = sorting(head);
+
+    // 步骤4：打印排序后的链表
+    printf("排序后的链表：");
+    printList(head);
+
+    // 步骤5：释放链表内存
+    freeList(head);
+    head = NULL; // 避免野指针
+
+    return 0;
+}
