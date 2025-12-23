@@ -1,0 +1,38 @@
+#include <stdio.h>
+
+// 插入函数：在有序字符串中插入字符并保持升序
+char *insert(char *string, char c) {
+    char *p = string;
+    // 步骤1：找到插入位置（第一个ASCII值大于c的字符位置）
+    while (*p != '\0' && *p <= c) {
+        p++;
+    }
+    
+    // 步骤2：将插入位置及之后的字符（含结束符）后移1位
+    char *end = string;
+    while (*end != '\0') { // 定位字符串末尾
+        end++;
+    }
+    for (; end >= p; end--) { // 从末尾向插入位置反向后移
+        *(end + 1) = *end;
+    }
+    
+    // 步骤3：插入字符c
+    *p = c;
+    
+    return string; // 返回插入后的字符串首地址
+}
+
+int main() {
+    char str[51]; // 预留足够空间（最多50字符+结束符'\0'）
+    char c;
+    // 输入有序字符串（无空格）
+    scanf("%s", str);
+    // 输入待插入字符（跳过空白符）
+    scanf(" %c", &c);
+    
+    char *result = insert(str, c);
+    // 输出插入后的字符串
+    printf("%s\n", result);
+    return 0;
+}
